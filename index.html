@@ -75,18 +75,7 @@
                             song.innerText = `${track.name} - ${track.artist['#text']}`
                             song.href = track.url
 
-                            if (track.image[3]['#text'] == 'https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png') {
-                                fetch(`https://api.deezer.com/search/?q=artist:${encodeURIComponent(`"${track.artist['#text']}"`)}%20album:${encodeURIComponent(`"${track.album['#text']}"`)}%20track:${encodeURIComponent(`"${track.name}"`)}`)
-                                .then(res => res.json())
-                                .then(({ data }) => {
-                                    const _song = data.find(song => song.title === track.name);
-
-                                    if (!_song) image.src = "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png"
-                                    else image.src = _song.album.cover_xl
-                                })
-                            } else {
-                                image.src = track.image[3]['#text']
-                            }
+                            image.src = track.image[3]['#text'] || 'https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png'
                         })
                 }
 
