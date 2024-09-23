@@ -43,6 +43,57 @@
             <p>You can also email me at <code><span id="email"></span></code>, although barely anyone uses email
                 nowadays&hellip; right?</p>
         </div>
+        <div>
+            <h2>Music</h2>
+            <div class="music-container">
+                <div>
+                    <p class="lastfm-widget">
+                        <strong id="music_status">&#127911; Last listened to</strong>
+                        <a id="song">undefined</a>
+                        <p><small>powered by <a href="https://github.com/biancarosa/lastfm-last-played"
+                            target="_blank">@biancarosa/lastfm-last-played</a></small></p>
+                    </p>
+                    
+                    <a href="https://last.fm/user/dainfloop">View me on last.fm</a>
+                </div>
+                <img src="https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png"/>
+            </div>
+
+            <script type="module">
+                const music_status = document.querySelector('#music_status')
+                const song = document.querySelector('#song')
+                const image = document.querySelector('.music-container img')
+
+                function fetchListeningStatus() {
+                    fetch('https://lastfm-last-played.biancarosa.com.br/dainfloop/latest-song')
+                        .then(res => res.json())
+                        .then(({ track }) => {
+                            if (track['@attr']?.nowplaying == "true") {
+                                music_status.innerHTML = "&#127911; Now listening to"
+                            }
+
+                            song.innerText = `${track.name} - ${track.artist['#text']}`
+                            song.href = track.url
+
+                            if (track.image[3]['#text'] == 'https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png') {
+                                fetch(`https://api.deezer.com/search/?q=artist:${encodeURIComponent(`"${track.artist['#text']}"`)}%20album:${encodeURIComponent(`"${track.album['#text']}"`)}%20track:${encodeURIComponent(`"${track.name}"`)}`)
+                                .then(res => res.json())
+                                .then(({ data }) => {
+                                    const _song = data.find(song => song.title === track.name);
+
+                                    if (!_song) image.src = "https://lastfm.freetls.fastly.net/i/u/64s/2a96cbd8b46e442fc41c2b86b821562f.png"
+                                    else image.src = _song.album.cover_xl
+                                })
+                            } else {
+                                image.src = track.image[3]['#text']
+                            }
+                        })
+                }
+
+                fetchListeningStatus()
+                
+            </script>
+        </div>
     </div>
 
     <div class="right">
@@ -50,7 +101,7 @@
         <script src="https://giscus.app/client.js" data-repo="dainfloop/guestbook" data-repo-id="R_kgDOM1NNHw"
             data-mapping="number" data-term="1" data-reactions-enabled="0" data-emit-metadata="0"
             data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" crossorigin="anonymous" async>
-        </script>
+            </script>
     </div>
 </body>
 

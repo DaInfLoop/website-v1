@@ -9,6 +9,23 @@ body {
     flex-wrap: wrap;
 }
 
+.music-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.music-container img {
+    width: 128px;
+    height: 128px;
+}
+
+.lastfm-widget {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
 code {
     border-radius: 3px;
     font-family: courier, monospace;
